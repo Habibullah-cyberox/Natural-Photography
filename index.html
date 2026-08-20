@@ -1,0 +1,454 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>NatureLens — Photography Books</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+    <!-- ANIMATED BACKGROUND SLIDESHOW -->
+    <div class="index-bg-slideshow" id="indexBgSlideshow"></div>
+    <div class="nature-background"></div>
+    <div class="particles" id="particles"></div>
+    <div class="bubbles-container" id="bubblesContainer"></div>
+
+    <!-- NAVBAR -->
+    <header class="site-header">
+        <nav class="navbar glass">
+            <button class="brand" onclick="goHome()"><span>Nature</span>Lens</button>
+            <div class="nav-links">
+                <button onclick="goHome()">Home</button>
+                <button onclick="scrollToBooks()">Books</button>
+                <button onclick="scrollToNews()">News</button>
+                <button onclick="scrollToPortfolio()">Portfolio</button>
+                <button onclick="scrollToGallery()">Gallery</button>
+                <button onclick="showAbout()">About</button>
+                <button onclick="scrollToContact()">Contact Us</button>
+            </div>
+            <div class="account-area">
+                <span id="userName" class="user-name"></span>
+                <button id="changePasswordBtn" class="glass-button hidden" onclick="openAuth('changePassword')">Change Password</button>
+                <button id="authButton" class="glass-button" onclick="openAuth('login')">Sign In</button>
+            </div>
+        </nav>
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <div id="mainContent">
+        <main>
+
+            <!-- HERO -->
+            <section id="home" class="hero-section">
+                <div class="hero-content glass">
+                    <div class="eyebrow">DIGITAL PHOTOGRAPHY BOOKS</div>
+                    <h1>Stories from <span>the wild.</span></h1>
+                    <p>Explore cinematic photography books created around mountains, forests, oceans, deserts, frozen tundra and the quiet moments found in nature.</p>
+                    <div class="hero-buttons">
+                        <button class="primary-button" onclick="scrollToBooks()">Explore Books</button>
+                        <button class="glass-button" onclick="openAuth('register')">Join NatureLens</button>
+                    </div>
+                </div>
+                <div class="hero-visual" id="heroVisual">
+                    <div class="hero-slideshow" id="heroSlideshow">
+                        <div class="hero-slide-indicators" id="heroIndicators"></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- STATS -->
+            <section class="stats-section">
+                <div class="stat glass">
+                    <strong id="bookCount">0</strong>
+                    <span>Photography Books</span>
+                </div>
+                <div class="stat glass">
+                    <strong id="galleryCount">0</strong>
+                    <span>Natural Photographs</span>
+                </div>
+                <div class="stat glass">
+                    <strong>28</strong>
+                    <span>Locations</span>
+                </div>
+                <div class="stat glass">
+                    <strong>12</strong>
+                    <span>Years Capturing</span>
+                </div>
+            </section>
+
+            <!-- BOOK SECTION -->
+            <section id="books" class="books-section">
+                <div class="section-heading">
+                    <div class="heading-left">
+                        <div class="eyebrow">THE COLLECTION</div>
+                        <h2>Photography Books</h2>
+                    </div>
+                    <div class="heading-right">
+                        <button class="upload-btn-icon" onclick="openBookUpload()" title="Upload a new book">
+                            <svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                            Upload Book
+                        </button>
+                        <p>Hover a book to explore, click to read.</p>
+                    </div>
+                </div>
+
+                <div class="book-controls">
+                    <input id="bookSearch" class="search-input glass" type="search" placeholder="Search photography books...">
+                    <div class="category-buttons">
+                        <button class="category-button active" data-category="all">All</button>
+                        <button class="category-button" data-category="Landscape">Landscape</button>
+                        <button class="category-button" data-category="Forest">Forest</button>
+                        <button class="category-button" data-category="Ocean">Ocean</button>
+                        <button class="category-button" data-category="Wildlife">Wildlife</button>
+                        <button class="category-button" data-category="Desert">Desert</button>
+                        <button class="category-button" data-category="Arctic">Arctic</button>
+                        <button class="category-button" data-category="River">River</button>
+                    </div>
+                </div>
+
+                <div id="bookGrid" class="book-grid"></div>
+            </section>
+
+            <!-- =====================================================
+            NEWS SECTION — CAROUSEL (auto-rotates every 3s)
+            ===================================================== -->
+            <section id="news" class="news-section">
+                <div class="section-heading">
+                    <div class="heading-left">
+                        <div class="eyebrow">LATEST UPDATES</div>
+                        <h2>Photography News</h2>
+                    </div>
+                    <p>Stay informed with the latest trends, gear reviews, and stories from the world of nature photography.</p>
+                </div>
+
+                <div class="news-carousel glass" id="newsCarousel">
+                    <!-- Slides injected by JS -->
+                    <div id="newsSlidesWrapper" style="position:relative;width:100%;height:100%;min-height:420px;"></div>
+
+                    <!-- Controls -->
+                    <div class="news-controls">
+                        <button id="newsPrevBtn" aria-label="Previous">‹</button>
+                        <button id="newsNextBtn" aria-label="Next">›</button>
+                    </div>
+
+                    <!-- Dots -->
+                    <div class="news-dots" id="newsDots"></div>
+                </div>
+            </section>
+
+            <!-- PORTFOLIO SECTION -->
+            <section id="portfolio" class="portfolio-section">
+                <div class="section-heading">
+                    <div class="heading-left">
+                        <div class="eyebrow">FEATURED ARTISTS</div>
+                        <h2>Photographer Portfolio</h2>
+                    </div>
+                    <p>Meet the visual storytellers behind the NatureLens collection. Each photographer brings a unique perspective to the natural world.</p>
+                </div>
+                <div class="portfolio-grid">
+                    <div class="portfolio-card glass">
+                        <div class="portfolio-header">
+                            <img src="habibullah.jpeg" alt="Habibullah Raj" class="portfolio-avatar" onerror="this.style.display='none'">
+                            <div class="portfolio-info"><h3>Habibullah Raj</h3><span>Mountain & Landscape Specialist</span></div>
+                        </div>
+                        <div class="portfolio-stats"><div><strong>47</strong><span>Expeditions</span></div><div><strong>12</strong><span>Countries</span></div><div><strong>8</strong><span>Awards</span></div></div>
+                        <p class="portfolio-bio">Habibullah has spent the last decade documenting the world's highest peaks. His work focuses on the intersection of light, altitude, and atmosphere.</p>
+                        <div class="portfolio-tags"><span>Himalayas</span><span>Alps</span><span>Patagonia</span></div>
+                    </div>
+                    <div class="portfolio-card glass">
+                        <div class="portfolio-header">
+                            <img src="rifat.jpeg" alt="Rifat Khan" class="portfolio-avatar" onerror="this.style.display='none'">
+                            <div class="portfolio-info"><h3>Rifat Hossan</h3><span>Forest & Macro Photographer</span></div>
+                        </div>
+                        <div class="portfolio-stats"><div><strong>32</strong><span>Forests</span></div><div><strong>6</strong><span>Continents</span></div><div><strong>15</strong><span>Publications</span></div></div>
+                        <p class="portfolio-bio">Rifat captures the hidden worlds within ancient woodlands. His patience for fog, moss, and morning light is unmatched in the field.</p>
+                        <div class="portfolio-tags"><span>Black Forest</span><span>Amazon</span><span>Taiga</span></div>
+                    </div>
+                    <div class="portfolio-card glass">
+                        <div class="portfolio-header">
+                            <img src="mizan.jpeg" alt="Mizan Khan" class="portfolio-avatar" onerror="this.style.display='none'">
+                            <div class="portfolio-info"><h3>S A A Mizan</h3><span>Ocean & Coastal Documentarian</span></div>
+                        </div>
+                        <div class="portfolio-stats"><div><strong>28</strong><span>Coastlines</span></div><div><strong>4</strong><span>Oceans</span></div><div><strong>5</strong><span>Exhibitions</span></div></div>
+                        <p class="portfolio-bio">Mizan documents the changing relationship between land and sea. His long-exposure work reveals the hidden motion of tides and time.</p>
+                        <div class="portfolio-tags"><span>Atlantic</span><span>Pacific</span><span>Mediterranean</span></div>
+                    </div>
+                    <div class="portfolio-card glass">
+                        <div class="portfolio-header">
+                            <img src="murshidul.jpeg" alt="Murshidul Islam" class="portfolio-avatar" onerror="this.style.display='none'">
+                            <div class="portfolio-info"><h3>Murshidul Islam</h3><span>Wildlife & Safari Photographer</span></div>
+                        </div>
+                        <div class="portfolio-stats"><div><strong>56</strong><span>Safaris</span></div><div><strong>9</strong><span>Reserves</span></div><div><strong>11</strong><span>Features</span></div></div>
+                        <p class="portfolio-bio">Murshidul's ethical approach to wildlife photography prioritizes animal welfare. He believes the best portrait is the one the animal chooses to give.</p>
+                        <div class="portfolio-tags"><span>Serengeti</span><span>Masai Mara</span><span>Okavango</span></div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- =====================================================
+            GALLERY SECTION (auth-gated)
+            ===================================================== -->
+            <section id="gallery" class="gallery-section auth-hidden">
+                <div class="section-heading">
+                    <div class="heading-left">
+                        <div class="eyebrow">VISUAL ARCHIVE</div>
+                        <h2>Photography Gallery</h2>
+                    </div>
+                    <div class="heading-right">
+                        <button class="upload-btn-icon" onclick="triggerGalleryUpload()" title="Upload an image">
+                            <svg viewBox="0 0 24 24"><path d="M12 5v14"/><path d="M5 12h14"/></svg>
+                            Upload Image
+                        </button>
+                        <p>A curated selection of frames from our expeditions.</p>
+                    </div>
+                </div>
+                <div id="galleryGridWrapper" style="display:none;">
+                    <div class="gallery-grid" id="galleryGrid"></div>
+                </div>
+                <div id="galleryAuthOverlay" class="gallery-auth-overlay glass">
+                    <span class="lock-icon">🔒</span>
+                    <h3>Sign in to explore the gallery</h3>
+                    <p>Access our full collection of nature photography from around the world. Sign in to view images, details, and behind-the-scenes stories.</p>
+                    <button class="primary-button" onclick="openAuth('login')">Sign In</button>
+                    <button class="glass-button" style="margin-left:12px;" onclick="openAuth('register')">Create Account</button>
+                </div>
+            </section>
+
+            <!-- GALLERY LIGHTBOX -->
+            <div id="galleryLightbox" class="gallery-lightbox">
+                <button class="lightbox-close" onclick="closeGalleryLightbox()">×</button>
+                <div class="lightbox-inner">
+                    <div class="lightbox-left">
+                        <button class="lightbox-nav prev" onclick="prevGalleryPhoto()">‹</button>
+                        <div class="lightbox-photo-wrap">
+                            <img id="lightboxMainImage" src="" alt="">
+                            <div class="lightbox-counter"><span id="lightboxCurrent">1</span> / <span id="lightboxTotal">9</span></div>
+                        </div>
+                        <button class="lightbox-nav next" onclick="nextGalleryPhoto()">›</button>
+                    </div>
+                    <div class="lightbox-right">
+                        <div class="lightbox-details" id="lightboxDetails"></div>
+                    </div>
+                </div>
+                <div class="lightbox-thumbnails" id="lightboxThumbnails"></div>
+            </div>
+
+            <!-- ABOUT -->
+            <section id="about" class="about-section">
+                <div class="about-image glass">
+                    <img src="https://images.unsplash.com/photo-1500534623283-312aade485b7?auto=format&fit=crop&w=1200&q=80" alt="Nature photography" loading="lazy">
+                </div>
+                <div class="about-content glass">
+                    <div class="eyebrow">THE PHOTOGRAPHER</div>
+                    <h2>Photographing places where light meets silence.</h2>
+                    <p>NatureLens is a digital photography journal dedicated to landscapes, forests, oceans, wildlife, deserts and frozen frontiers.</p>
+                    <p>Every book combines photographs with the stories, locations, camera settings and experiences behind the images. Our mission is to inspire conservation through visual storytelling.</p>
+                    <p>Founded in 2014, NatureLens has grown from a personal blog into a collective of five professional photographers across four continents. We believe that understanding a place is the first step toward protecting it.</p>
+                    <div class="about-stats-row">
+                        <div><strong>500K+</strong><span>Readers</span></div>
+                        <div><strong>85</strong><span>Countries Reached</span></div>
+                        <div><strong>14</strong><span>Industry Awards</span></div>
+                    </div>
+                    <button class="primary-button" onclick="openAuth('register')">Become a Reader</button>
+                </div>
+            </section>
+
+            <!-- =====================================================
+            CONTACT SECTION (auth-gated)
+            ===================================================== -->
+            <section id="contact" class="contact-section auth-hidden">
+                <div class="section-heading">
+                    <div class="heading-left">
+                        <div class="eyebrow">GET IN TOUCH</div>
+                        <h2>Contact Us</h2>
+                    </div>
+                    <p>Have a question, collaboration idea, or just want to say hello? We'd love to hear from you.</p>
+                </div>
+                <div class="contact-grid">
+                    <div class="contact-info glass">
+                        <h3>Let's Connect</h3>
+                        <div class="contact-item"><span class="contact-icon">📍</span><div><strong>Studio</strong><p>123 Wilderness Ave, Portland, OR 97201</p></div></div>
+                        <div class="contact-item"><span class="contact-icon">✉️</span><div><strong>Email</strong><p>hello@naturelens.com</p></div></div>
+                        <div class="contact-item"><span class="contact-icon">📞</span><div><strong>Phone</strong><p>+1 (503) 555-0147</p></div></div>
+                        <div class="contact-social">
+                            <button class="glass-button">Instagram</button>
+                            <button class="glass-button">Twitter</button>
+                            <button class="glass-button">YouTube</button>
+                        </div>
+                    </div>
+                    <form class="contact-form glass" id="contactForm">
+                        <div class="input-group"><label>Full Name</label><input type="text" id="contactName" placeholder="Your name" required></div>
+                        <div class="input-group"><label>Email</label><input type="email" id="contactEmail" placeholder="you@example.com" required></div>
+                        <div class="input-group"><label>Subject</label><input type="text" id="contactSubject" placeholder="What's this about?" required></div>
+                        <div class="input-group"><label>Message</label><textarea id="contactMessage" rows="5" placeholder="Tell us everything..." required></textarea></div>
+                        <button class="primary-button full-button" type="submit">Send Message</button>
+                        <p id="contactMessageStatus" class="auth-message"></p>
+                    </form>
+                </div>
+            </section>
+
+        </main>
+    </div>
+
+    <!-- BOOK VIEW PAGE (MAGAZINE MODE) -->
+    <div id="bookViewPage" class="book-view-page">
+        <div class="book-bg-slideshow" id="bookBgSlideshow"></div>
+        <div class="book-bg-overlay"></div>
+
+        <header class="book-view-header">
+            <button class="back-to-books" onclick="closeBookView()">← Back to Collection</button>
+            <div class="book-view-info">
+                <img id="bookViewCover" src="" alt="">
+                <div class="book-view-text">
+                    <div class="book-view-category" id="bookViewCategory"></div>
+                    <h1 id="bookViewTitle"></h1>
+                    <p id="bookViewSubtitle"></p>
+                    <div class="book-view-meta-row">
+                        <span id="bookViewLocation"></span>
+                        <span>•</span>
+                        <span id="bookViewYear"></span>
+                        <span>•</span>
+                        <span id="bookViewPages"></span>
+                    </div>
+                    <p id="bookViewDescription" class="book-view-description"></p>
+                </div>
+            </div>
+        </header>
+
+        <div class="book-view-reader">
+            <div class="hover-zone hover-left" data-direction="prev">
+                <div class="hover-hint-left">‹ Prev</div>
+            </div>
+            <div id="bookViewContent" class="book-view-content paper-page"></div>
+            <div class="hover-zone hover-right" data-direction="next">
+                <div class="hover-hint-right">Next ›</div>
+            </div>
+        </div>
+
+        <div class="book-view-footer">
+            <div class="footer-left"><span id="bookViewCounter">01 / 01</span></div>
+            <div class="footer-center"><span class="hover-instruction">Scroll or hover edges to turn pages</span></div>
+            <div class="footer-right"><span id="bookViewTags"></span></div>
+        </div>
+    </div>
+
+    <!-- AUTH MODAL -->
+    <div id="authModal" class="modal">
+        <div class="auth-card glass" id="authCard">
+            <button class="modal-close" onclick="closeAuth()">×</button>
+            <div class="auth-logo">Nature<span>Lens</span></div>
+            <h2 id="authTitle">Welcome Back</h2>
+            <p id="authSubtitle">Sign in to open the complete photography books.</p>
+
+            <form id="loginForm" class="auth-form">
+                <div class="input-group"><label>Email</label><input id="loginEmail" type="email" placeholder="you@example.com" required></div>
+                <div class="input-group"><label>Password</label><input id="loginPassword" type="password" placeholder="Your password" required></div>
+                <button class="primary-button full-button" type="submit">Sign In</button>
+                <div class="auth-links"><button type="button" class="forgot-link" onclick="openAuth('forgotPassword')">Forgot Password?</button></div>
+                <p id="loginMessage" class="auth-message"></p>
+                <button type="button" class="switch-auth" onclick="openAuth('register')">Don't have an account? <span>Register</span></button>
+            </form>
+
+            <form id="registerForm" class="auth-form hidden">
+                <div class="input-group"><label>Full Name</label><input id="registerName" type="text" placeholder="Your name" required></div>
+                <div class="input-group"><label>Email</label><input id="registerEmail" type="email" placeholder="you@example.com" required></div>
+                <div class="input-group"><label>Password</label><input id="registerPassword" type="password" placeholder="Create a password" required></div>
+                <div class="input-group"><label>Confirm Password</label><input id="registerConfirm" type="password" placeholder="Repeat password" required></div>
+                <button class="primary-button full-button" type="submit">Create Account</button>
+                <p id="registerMessage" class="auth-message"></p>
+                <button type="button" class="switch-auth" onclick="openAuth('login')">Already registered? <span>Sign In</span></button>
+            </form>
+
+            <form id="forgotPasswordForm" class="auth-form hidden">
+                <div class="input-group"><label>Email</label><input id="forgotEmail" type="email" placeholder="you@example.com" required></div>
+                <div class="input-group"><label>New Password</label><input id="forgotNewPassword" type="password" placeholder="Enter new password" required></div>
+                <div class="input-group"><label>Confirm New Password</label><input id="forgotConfirmPassword" type="password" placeholder="Repeat new password" required></div>
+                <button class="primary-button full-button" type="submit">Reset Password</button>
+                <p id="forgotPasswordMessage" class="auth-message"></p>
+                <button type="button" class="switch-auth" onclick="openAuth('login')">Remember your password? <span>Sign In</span></button>
+            </form>
+
+            <form id="changePasswordForm" class="auth-form hidden">
+                <div class="input-group"><label>Current Password</label><input id="currentPassword" type="password" placeholder="Enter current password" required></div>
+                <div class="input-group"><label>New Password</label><input id="newPassword" type="password" placeholder="Enter new password" required></div>
+                <div class="input-group"><label>Confirm New Password</label><input id="confirmNewPassword" type="password" placeholder="Repeat new password" required></div>
+                <button class="primary-button full-button" type="submit">Update Password</button>
+                <p id="changePasswordMessage" class="auth-message"></p>
+                <button type="button" class="switch-auth" onclick="openAuth('login')">Back to <span>Sign In</span></button>
+            </form>
+        </div>
+    </div>
+
+    <!-- =====================================================
+    BOOK UPLOAD MODAL
+    ===================================================== -->
+    <div id="bookUploadModal" class="modal-overlay">
+        <div class="book-upload-modal glass">
+            <button class="modal-close" onclick="closeBookUpload()">×</button>
+            <h2>📖 Upload a New Book</h2>
+            <p class="sub">Add your photography book to the NatureLens collection.</p>
+
+            <form id="bookUploadForm">
+                <div class="input-group">
+                    <label>Book Title *</label>
+                    <input id="bookUploadTitle" type="text" placeholder="e.g. Above the Clouds" required>
+                </div>
+                <div class="input-group">
+                    <label>Subtitle</label>
+                    <input id="bookUploadSubtitle" type="text" placeholder="e.g. Mountain Stories">
+                </div>
+                <div class="input-group">
+                    <label>Category *</label>
+                    <select id="bookUploadCategory" required>
+                        <option value="">Select category</option>
+                        <option value="Landscape">Landscape</option>
+                        <option value="Forest">Forest</option>
+                        <option value="Ocean">Ocean</option>
+                        <option value="Wildlife">Wildlife</option>
+                        <option value="Desert">Desert</option>
+                        <option value="Arctic">Arctic</option>
+                        <option value="River">River</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Location</label>
+                    <input id="bookUploadLocation" type="text" placeholder="e.g. Himalayas, Nepal">
+                </div>
+                <div class="input-group">
+                    <label>Year</label>
+                    <input id="bookUploadYear" type="text" placeholder="e.g. 2026">
+                </div>
+                <div class="input-group">
+                    <label>Description</label>
+                    <textarea id="bookUploadDescription" rows="3" placeholder="A short description of the book..."></textarea>
+                </div>
+                <div class="input-group">
+                    <label>Tags (comma separated)</label>
+                    <input id="bookUploadTags" type="text" placeholder="e.g. Mountains, Mist, Sunrise">
+                </div>
+                <div class="input-group">
+                    <label>Cover Image *</label>
+                    <div class="file-input-wrap" id="bookCoverDrop">
+                        <div class="icon">🖼️</div>
+                        <p>Click or drag to upload cover image</p>
+                        <div class="file-name" id="bookCoverName"></div>
+                        <input type="file" id="bookCoverInput" accept="image/*" hidden>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-cancel" onclick="closeBookUpload()">Cancel</button>
+                    <button type="submit" class="btn-submit">Upload Book</button>
+                </div>
+                <div id="bookUploadStatus" class="upload-status"></div>
+            </form>
+        </div>
+    </div>
+
+    <!-- TOAST -->
+    <div id="toast" class="toast"></div>
+
+  <script src="script.js"></script>
+</body>
+</html>
